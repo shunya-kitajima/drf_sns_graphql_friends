@@ -95,6 +95,18 @@ class Query(graphene.ObjectType):
     all_users = DjangoFilterConnectionField(UserNode)
     all_profiles = DjangoFilterConnectionField(ProfileNode)
 
+    @login_required
+    def resolve_profile(self, info, **kwargs):
+        return Profile.objects.get(user_prof=info.context.user.id)
+
+    @login_required
+    def resolve_all_users(self, info, **kwargs):
+        return User.objects.all()
+
+    @login_required
+    def resolve_all_profiles(self, info, **kwargs):
+        return Profile.objects.all()
+
 
 class Mutation(graphene.ObjectType):
     create_user = CreateUserMutation.Field()
