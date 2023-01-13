@@ -63,7 +63,7 @@ AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
 ]
 
-ROOT_URLCONF = "sns_graphql.urls"
+ROOT_URLCONF = "sns_friends.urls"
 
 TEMPLATES = [
     {
@@ -81,7 +81,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "sns_graphql.wsgi.application"
+WSGI_APPLICATION = "sns_friends.wsgi.application"
 
 
 # Database
