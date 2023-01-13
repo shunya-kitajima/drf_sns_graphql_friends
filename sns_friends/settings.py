@@ -52,7 +52,7 @@ CORS_ORIGIN_WHITELIST = [
 ]
 
 GRAPHENE = {
-    "SCHEMA": "sns_graphql.schema.schema",
+    "SCHEMA": "sns_friends.schema.schema",
     "MIDDLEWARE": [
         "graphql_jwt.middleware.JSONWebTokenMiddleware",
     ],
