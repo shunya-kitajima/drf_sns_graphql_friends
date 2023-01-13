@@ -44,3 +44,16 @@ class CreateUserMutation(relay.ClientIDMutation):
         user.save()
 
         return CreateUserMutation(user=user)
+
+
+class CreateProfileMutation(relay.ClientIDMutation):
+    profile = graphene.Field(ProfileNode)
+
+    @login_required
+    def mutate_and_get_payload(root, info, **input):
+        profile = Profile(
+            user_prof_id=info.context.user.id
+        )
+        profile.save()
+
+        return CreateProfileMutation(profile=profile)
