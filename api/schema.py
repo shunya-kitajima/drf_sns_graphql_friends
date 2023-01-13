@@ -89,3 +89,9 @@ class UpdateProfileMutation(relay.ClientIDMutation):
 
         return UpdateProfileMutation(profile=profile)
 
+
+class Mutation(graphene.ObjectType):
+    create_user = CreateUserMutation.Field()
+    token_auth = graphql_jwt.ObtainJSONWebToken.Field()
+    create_profile = CreateProfileMutation.Field()
+    update_profile = UpdateProfileMutation.Field()
