@@ -90,6 +90,12 @@ class UpdateProfileMutation(relay.ClientIDMutation):
         return UpdateProfileMutation(profile=profile)
 
 
+class Query(graphene.ObjectType):
+    profile = graphene.Field(ProfileNode)
+    all_users = DjangoFilterConnectionField(UserNode)
+    all_profiles = DjangoFilterConnectionField(ProfileNode)
+
+
 class Mutation(graphene.ObjectType):
     create_user = CreateUserMutation.Field()
     token_auth = graphql_jwt.ObtainJSONWebToken.Field()
