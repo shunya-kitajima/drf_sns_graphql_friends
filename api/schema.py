@@ -100,10 +100,30 @@ class UpdateProfileMutation(relay.ClientIDMutation):
         return UpdateProfileMutation(profile=profile)
 
 
+class CreateMessageMutation(relay.ClientIDMutation):
+    class Input:
+        message = graphene.String(required=True)
+        receiver = graphene.ID(required=True)
+
+    message = graphene.Field(MessageNode)
+
+    @login_required
+    def mutate_and_get_payload(root, info, **input):
+        message = Message(
+            message=input.get("message"),
+            sender_id=info.context.user.id,
+            receiver_id=from_global_id(input.get("receiver"))[1]
+        )
+        message.save()
+
+        return CreateMessageMutation(message=message)
+
+
 class Query(graphene.ObjectType):
     profile = graphene.Field(ProfileNode)
     all_users = DjangoFilterConnectionField(UserNode)
     all_profiles = DjangoFilterConnectionField(ProfileNode)
+    all_messages = DjangoFilterConnectionField(MessageNode)
 
     @login_required
     def resolve_profile(self, info, **kwargs):
@@ -117,9 +137,14 @@ class Query(graphene.ObjectType):
     def resolve_all_profiles(self, info, **kwargs):
         return Profile.objects.all()
 
+    @login_required
+    def resolve_all_messages(self, info, **kwargs):
+        return Message.objects.all()
+
 
 class Mutation(graphene.ObjectType):
     create_user = CreateUserMutation.Field()
     token_auth = graphql_jwt.ObtainJSONWebToken.Field()
     create_profile = CreateProfileMutation.Field()
     update_profile = UpdateProfileMutation.Field()
+    create_message = CreateMessageMutation.Field()
