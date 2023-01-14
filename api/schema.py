@@ -6,7 +6,7 @@ import graphql_jwt
 from graphql_jwt.decorators import login_required
 from graphql_relay import from_global_id
 from django.contrib.auth.models import User
-from .models import Profile
+from .models import Profile, Message
 
 
 class UserNode(DjangoObjectType):
@@ -23,6 +23,16 @@ class ProfileNode(DjangoObjectType):
         model = Profile
         filter_fields = {
             "user_prof__username": ["icontains"],
+        }
+        interfaces = (relay.Node,)
+
+
+class MessageNode(DjangoObjectType):
+    class Meta:
+        model = Message
+        filter_fields = {
+            "sender": ["exact"],
+            "receiver": ["exact"],
         }
         interfaces = (relay.Node,)
 
